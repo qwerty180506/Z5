@@ -1,0 +1,41 @@
+name: Auto Update Playlist
+
+on:
+  schedule:
+    # Runs every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allows you to manually trigger the workflow from the Actions tab for testing
+
+permissions:
+  contents: write
+
+jobs:
+  update-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run conversion script
+        run: python convert.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add zee5_playlist.m3u
+          # The command below commits only if changes exist, otherwise it prints a message and exits gracefully
+          git commit -m "Auto-update playlist [skip ci]" || echo "No changes to commit"
+          git push
