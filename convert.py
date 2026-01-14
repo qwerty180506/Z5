@@ -2,7 +2,7 @@ import requests
 import json
 
 # The URL you provided
-JSON_URL = "https://raw.githubusercontent.com/hasanhabibmottakin/Z5/refs/heads/main/data.json"
+JSON_URL = "https://raw.githubusercontent.com/hasanhabibmottakin/Z5/refs/heads/main/rest_api.json"
 OUTPUT_FILE = "zee5_playlist.m3u"
 
 def convert_to_m3u(url, output_filename):
